@@ -62,8 +62,8 @@ We will be updating the source code repository accordingly.
 ### Our Team
 
 1. Ikwuo Afia Ikwuo
-2. Emmanuel Yusufu
-3. Blessing
-4. Kuro Souza
+2. Grace James
+3. Kuro Souza
+4. Blessing
 5. Ire
 6. Samuel
