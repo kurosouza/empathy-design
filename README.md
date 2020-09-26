@@ -64,6 +64,6 @@ We will be updating the source code repository accordingly.
 1. Ikwuo Afia Ikwuo
 2. Grace James
 3. Kuro Souza
-4. Blessing
+4. Ehinmowo Blessing
 5. Ire
 6. Samuel
