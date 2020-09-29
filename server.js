@@ -44,7 +44,7 @@ let connStr =
 
 //Maps APIs
 app.post("/getFamilyLatLng", function (request, response) {
-  
+
   let ngoid = request.body.NGOId;
   ibmdb.open(connStr, function (err, conn) {
     if (err) {
@@ -53,17 +53,17 @@ app.post("/getFamilyLatLng", function (request, response) {
       conn.query(
         `  SELECT A.NO_OF_PACKAGES, B."Family_id", B."Lat", B."Long"
       FROM ` +
-          process.env.DB_SCHEMA +
-          `.TRANSACTION A INNER JOIN `+
-          process.env.DB_SCHEMA +
-         `.USERS C ON C.ID = A.USER_ID 
+        process.env.DB_SCHEMA +
+        `.TRANSACTION A INNER JOIN ` +
+        process.env.DB_SCHEMA +
+        `.USERS C ON C.ID = A.USER_ID 
       INNER JOIN `+
-      process.env.DB_SCHEMA +
-     `.FAMILY B ON B."Family_id"= C."Family_id"
+        process.env.DB_SCHEMA +
+        `.FAMILY B ON B."Family_id"= C."Family_id"
       GROUP BY A.NO_OF_PACKAGES, B."Family_id", B."Lat", B."Long",STATUS,NGO_ID
       HAVING STATUS = 'Completed' AND NGO_ID=` +
-          Number(ngoid) +
-          `;`,
+        Number(ngoid) +
+        `;`,
         function (err, data) {
           if (err) {
             return response.json({ success: -2, message: err });
@@ -80,7 +80,7 @@ app.post("/getFamilyLatLng", function (request, response) {
       );
     }
   });
- 
+
 });
 
 app.get("/getNGOLatLng", function (request, response) {
@@ -106,10 +106,10 @@ app.get("/getNGOLatLng", function (request, response) {
       });
     }
   });
- 
+
 });
 
-app.get('/getFamilyLatLngForGovernment',function (request, response) {
+app.get('/getFamilyLatLngForGovernment', function (request, response) {
   ibmdb.open(connStr, function (err, conn) {
     if (err) {
       console.log(err);
@@ -117,13 +117,13 @@ app.get('/getFamilyLatLngForGovernment',function (request, response) {
       conn.query(
         `  SELECT A.NO_OF_PACKAGES, B."Family_id", B."Lat", B."Long"
       FROM ` +
-          process.env.DB_SCHEMA +
-          `.TRANSACTION A INNER JOIN `+
-          process.env.DB_SCHEMA +
-         `.USERS C ON C.ID = A.USER_ID 
+        process.env.DB_SCHEMA +
+        `.TRANSACTION A INNER JOIN ` +
+        process.env.DB_SCHEMA +
+        `.USERS C ON C.ID = A.USER_ID 
       INNER JOIN `+
-      process.env.DB_SCHEMA +
-     `.FAMILY B ON B."Family_id"= C."Family_id"
+        process.env.DB_SCHEMA +
+        `.FAMILY B ON B."Family_id"= C."Family_id"
       GROUP BY A.NO_OF_PACKAGES, B."Family_id", B."Lat", B."Long",STATUS
       HAVING STATUS = 'Completed'`,
         function (err, data) {
@@ -141,8 +141,8 @@ app.get('/getFamilyLatLngForGovernment',function (request, response) {
         })
     }
   });
-  
-  });
+
+});
 
 
 
@@ -171,7 +171,7 @@ app.get("/getUsers", function (request, response) {
       });
     }
   });
-  
+
 });
 
 app.post("/getNGOCapacity", function (request, response) {
@@ -182,10 +182,10 @@ app.post("/getNGOCapacity", function (request, response) {
     } else {
       conn.query(
         `SELECT * FROM ` +
-          process.env.DB_SCHEMA +
-          `.NGO where "NGO_ID" =` +
-          Number(ngoname) +
-          `;`,
+        process.env.DB_SCHEMA +
+        `.NGO where "NGO_ID" =` +
+        Number(ngoname) +
+        `;`,
         function (err, data) {
           if (err) {
             return response.json({ success: -2, message: err });
@@ -202,10 +202,10 @@ app.post("/getNGOCapacity", function (request, response) {
       );
     }
   });
-  
+
 });
 
-app.post("/getNGOBeneficiaries", function(request,response){
+app.post("/getNGOBeneficiaries", function (request, response) {
   let ngoid = request.body.NGOId;
   ibmdb.open(connStr, function (err, conn) {
     if (err) {
@@ -214,11 +214,11 @@ app.post("/getNGOBeneficiaries", function(request,response){
       conn.query(
         `SELECT COUNT(distinct(USER_ID)) AS Beneficiaries
       FROM ` +
-          process.env.DB_SCHEMA +
-          `.TRANSACTION
+        process.env.DB_SCHEMA +
+        `.TRANSACTION
       WHERE STATUS ='Completed' AND NGO_ID=` +
-          Number(ngoid) +
-          `;`,
+        Number(ngoid) +
+        `;`,
         function (err, data) {
           if (err) {
             return response.json({ success: -2, message: err });
@@ -235,10 +235,10 @@ app.post("/getNGOBeneficiaries", function(request,response){
       );
     }
   });
-  
+
 });
 
-app.get('/getNGOUnprocessedRequests', function(request,response){
+app.get('/getNGOUnprocessedRequests', function (request, response) {
   ibmdb.open(connStr, function (err, conn) {
     if (err) {
       console.log(err);
@@ -246,8 +246,8 @@ app.get('/getNGOUnprocessedRequests', function(request,response){
       conn.query(
         `SELECT COUNT(*) AS requestBags
       FROM ` +
-          process.env.DB_SCHEMA +
-          `.TRANSACTION
+        process.env.DB_SCHEMA +
+        `.TRANSACTION
       GROUP BY STATUS
       HAVING  STATUS ='Requested';`,
         function (err, data) {
@@ -266,7 +266,7 @@ app.get('/getNGOUnprocessedRequests', function(request,response){
       );
     }
   });
-  
+
 })
 
 app.post("/getUserRequest", function (request, response) {
@@ -277,10 +277,10 @@ app.post("/getUserRequest", function (request, response) {
     } else {
       conn.query(
         "SELECT * FROM " +
-          process.env.DB_SCHEMA +
-          ".TRANSACTION where ID =" +
-          NGOId +
-          ";",
+        process.env.DB_SCHEMA +
+        ".TRANSACTION where ID =" +
+        NGOId +
+        ";",
         function (err, data) {
           if (err) {
             return response.json({ success: -2, message: err });
@@ -297,10 +297,10 @@ app.post("/getUserRequest", function (request, response) {
       );
     }
   });
-  
+
 });
 
-app.post("/getDonorLogin",  function (request, response) {
+app.post("/getDonorLogin", function (request, response) {
   const regno = request.body.regno;
   const pass = request.body.pass;
   ibmdb.open(connStr, function (err, conn) {
@@ -309,12 +309,12 @@ app.post("/getDonorLogin",  function (request, response) {
     } else {
       conn.query(
         `SELECT  "Name", ID FROM ` +
-          process.env.DB_SCHEMA +
-          `."NGO"  where "NGO_ID" =` +
-          Number(regno) +
-          ` AND "Password" = ` +
-          Number(pass) +
-          `;`,
+        process.env.DB_SCHEMA +
+        `."NGO"  where "NGO_ID" =` +
+        Number(regno) +
+        ` AND "Password" = ` +
+        Number(pass) +
+        `;`,
         function (err, data) {
           if (err) {
             return response.json({ success: -2, message: err });
@@ -331,7 +331,7 @@ app.post("/getDonorLogin",  function (request, response) {
       );
     }
   });
-  
+
 });
 
 app.post("/getRequestStatusCountForNGO", function (request, response) {
@@ -343,11 +343,11 @@ app.post("/getRequestStatusCountForNGO", function (request, response) {
       conn.query(
         `SELECT A.STATUS, COUNT(*) as COUNT
         FROM ` +
-          process.env.DB_SCHEMA +
-          `."TRANSACTION" A INNER JOIN NGO B ON B.ID = A.NGO_ID
+        process.env.DB_SCHEMA +
+        `."TRANSACTION" A INNER JOIN NGO B ON B.ID = A.NGO_ID
         GROUP BY A. NGO_ID, STATUS, B. NGO_ID HAVING B.NGO_ID = ` +
-          Number(regno) +
-          `;`,
+        Number(regno) +
+        `;`,
         function (err, data) {
           if (err) {
             return response.json({ success: -2, message: err });
@@ -364,10 +364,10 @@ app.post("/getRequestStatusCountForNGO", function (request, response) {
       );
     }
   });
-  
+
 });
 
-app.post("/getRequestDateChart",function(request,response){
+app.post("/getRequestDateChart", function (request, response) {
   var mergeQuery = []
   var ngoID = request.body.NGOId
 
@@ -378,9 +378,9 @@ app.post("/getRequestDateChart",function(request,response){
       conn.query(
         `SELECT COUNT(*) AS completedBags, DATE
         FROM ` +
-          process.env.DB_SCHEMA +
-          `."TRANSACTION" GROUP BY STATUS, DATE, NGO_ID
-          HAVING  STATUS ='Completed' AND NGO_ID = `+Number(ngoID)+`
+        process.env.DB_SCHEMA +
+        `."TRANSACTION" GROUP BY STATUS, DATE, NGO_ID
+          HAVING  STATUS ='Completed' AND NGO_ID = `+ Number(ngoID) + `
           ORDER BY DATE;`,
         function (err, data) {
           if (err) {
@@ -390,8 +390,8 @@ app.post("/getRequestDateChart",function(request,response){
             conn.query(
               `  SELECT Count(*) as requestedBags,date
             FROM ` +
-                process.env.DB_SCHEMA +
-                `."TRANSACTION"
+              process.env.DB_SCHEMA +
+              `."TRANSACTION"
             GROUP BY status,date
             having  STATUS ='Requested'
             ORDER BY DATE;`,
@@ -410,13 +410,13 @@ app.post("/getRequestDateChart",function(request,response){
                 }
               }
             );
-            
+
           }
         }
       );
     }
   });
- 
+
 })
 
 app.post("/getTransactions", function (request, response) {
@@ -430,8 +430,8 @@ app.post("/getTransactions", function (request, response) {
       FROM USERS A 
       INNER JOIN TRANSACTION B ON A.ID = B.USER_ID INNER JOIN NGO C ON B.NGO_ID = C.ID
       WHERE C.NGO_ID=` +
-          NGOId +
-          `
+        NGOId +
+        `
       UNION
     ( 
       SELECT B.ID,B.DATE, A."First_Name", A."Last_Name",A."ID_cnic", A."Family_id", B.NO_OF_PACKAGES, B.STATUS
@@ -454,10 +454,10 @@ app.post("/getTransactions", function (request, response) {
       );
     }
   });
- 
+
 });
 
-app.post("/updateTransaction", function(request,response){
+app.post("/updateTransaction", function (request, response) {
   let tId = request.body.tId;
   let status = request.body.status;
   let key = request.body.key;
@@ -465,11 +465,11 @@ app.post("/updateTransaction", function(request,response){
     if (err) {
       console.log(err);
     } else {
-      conn.query("UPDATE "+process.env.DB_SCHEMA+".TRANSACTION SET STATUS= '"+status+"', NGO_ID = "+Number(key)+" where ID ="+Number(tId)+";", function (err, data) {
-        if (err){
-          return response.json({success:-2, message:err});
+      conn.query("UPDATE " + process.env.DB_SCHEMA + ".TRANSACTION SET STATUS= '" + status + "', NGO_ID = " + Number(key) + " where ID =" + Number(tId) + ";", function (err, data) {
+        if (err) {
+          return response.json({ success: -2, message: err });
         }
-        else{
+        else {
           conn.close(function () {
             return response.json({
               success: 1,
@@ -477,17 +477,17 @@ app.post("/updateTransaction", function(request,response){
               data: data,
             });
           })
-  
+
         }
-    });
+      });
     }
   });
- 
- 
-   
+
+
+
 });
 
-app.post("/getMonthlyRequest",function(request,response){
+app.post("/getMonthlyRequest", function (request, response) {
   let NGOId = request.body.NGOId;
   ibmdb.open(connStr, function (err, conn) {
     if (err) {
@@ -496,30 +496,30 @@ app.post("/getMonthlyRequest",function(request,response){
       conn.query(`  SELECT '01'||'-0'||MONTH("DATE")||'-'||YEAR("DATE") as date, COUNT(*) as total, STATUS
     FROM TRANSACTION
     GROUP BY  '01'||'-0'||MONTH("DATE")||'-'|| YEAR("DATE"),STATUS, NGO_ID
-    Having NGO_ID=`+Number(NGOId)+`;`, function (err, data) {
-      if (err){
-        return response.json({success:-2, message:err});
-      }
-      else{
-        
-        conn.close(function () {
-          return response.json({
-            success: 1,
-            message: "Data Received!",
-            data: data,
-          });
-        })
+    Having NGO_ID=`+ Number(NGOId) + `;`, function (err, data) {
+        if (err) {
+          return response.json({ success: -2, message: err });
+        }
+        else {
 
-      }
-  });
+          conn.close(function () {
+            return response.json({
+              success: 1,
+              message: "Data Received!",
+              data: data,
+            });
+          })
+
+        }
+      });
     }
   });
 
-  
-   
+
+
 });
 
-app.post("/getProvinceData",function (request,response){
+app.post("/getProvinceData", function (request, response) {
   let NGOId = request.body.NGOId;
   ibmdb.open(connStr, function (err, conn) {
     if (err) {
@@ -528,7 +528,7 @@ app.post("/getProvinceData",function (request,response){
       conn.query(
         `  SELECT P."Name", SUM(NO_OF_PACKAGES) as total
         FROM NGO N INNER JOIN TRANSACTION T ON N.ID = T.NGO_ID INNER JOIN PROVINCE P  ON P."ID" = N."province_id"
-        WHERE T.NGO_ID = `+Number(NGOId)+`
+        WHERE T.NGO_ID = `+ Number(NGOId) + `
         GROUP BY P."Name" ;`,
         function (err, data) {
           if (err) {
@@ -546,9 +546,9 @@ app.post("/getProvinceData",function (request,response){
       );
     }
   });
-  
-  
- 
+
+
+
 })
 
 
@@ -556,15 +556,15 @@ app.post("/getProvinceData",function (request,response){
 //Government APIS
 
 app.get("/getNGOCapacityForGovernment", function (request, response) { //done
-  
+
   ibmdb.open(connStr, function (err, conn) {
     if (err) {
       console.log(err);
     } else {
       conn.query(
         `SELECT SUM("Capacity") as total FROM ` +
-          process.env.DB_SCHEMA +
-          `.NGO;`,
+        process.env.DB_SCHEMA +
+        `.NGO;`,
         function (err, data) {
           if (err) {
             return response.json({ success: -2, message: err });
@@ -576,17 +576,17 @@ app.get("/getNGOCapacityForGovernment", function (request, response) { //done
                 data: data,
               });
             })
-            
+
           }
         }
       );
     }
   });
- 
-  
+
+
 });
 
-app.get("/getNGOBeneficiariesForGovernment", function(request,response){//done
+app.get("/getNGOBeneficiariesForGovernment", function (request, response) {//done
   ibmdb.open(connStr, function (err, conn) {
     if (err) {
       console.log(err);
@@ -594,8 +594,8 @@ app.get("/getNGOBeneficiariesForGovernment", function(request,response){//done
       conn.query(
         `SELECT COUNT(distinct(USER_ID)) AS Beneficiaries
       FROM ` +
-          process.env.DB_SCHEMA +
-          `.TRANSACTION
+        process.env.DB_SCHEMA +
+        `.TRANSACTION
       WHERE STATUS ='Completed';`,
         function (err, data) {
           if (err) {
@@ -613,11 +613,11 @@ app.get("/getNGOBeneficiariesForGovernment", function(request,response){//done
       );
     }
   });
-  
-  
+
+
 });
 
-app.get('/getNGOUnprocessedRequestsForGovernment', function(request,response){//done
+app.get('/getNGOUnprocessedRequestsForGovernment', function (request, response) {//done
   ibmdb.open(connStr, function (err, conn) {
     if (err) {
       console.log(err);
@@ -625,8 +625,8 @@ app.get('/getNGOUnprocessedRequestsForGovernment', function(request,response){//
       conn.query(
         `SELECT COUNT(*) AS requestBags
       FROM ` +
-          process.env.DB_SCHEMA +
-          `.TRANSACTION
+        process.env.DB_SCHEMA +
+        `.TRANSACTION
       GROUP BY STATUS
       HAVING  STATUS ='Requested';`,
         function (err, data) {
@@ -645,8 +645,8 @@ app.get('/getNGOUnprocessedRequestsForGovernment', function(request,response){//
       );
     }
   });
-  
-  
+
+
 })
 
 app.get("/getUserRequestForGovernment", function (request, response) {//done
@@ -656,8 +656,8 @@ app.get("/getUserRequestForGovernment", function (request, response) {//done
     } else {
       conn.query(
         "SELECT * FROM " +
-          process.env.DB_SCHEMA +
-          ".TRANSACTION ;",
+        process.env.DB_SCHEMA +
+        ".TRANSACTION ;",
         function (err, data) {
           if (err) {
             return response.json({ success: -2, message: err });
@@ -674,8 +674,8 @@ app.get("/getUserRequestForGovernment", function (request, response) {//done
       );
     }
   });
- 
-  
+
+
 });
 
 app.get("/getRequestStatusCountForGovernment", function (request, response) {//done
@@ -686,8 +686,8 @@ app.get("/getRequestStatusCountForGovernment", function (request, response) {//d
       conn.query(
         `SELECT A.STATUS, COUNT(*) as COUNT
         FROM ` +
-          process.env.DB_SCHEMA +
-          `."TRANSACTION" A 
+        process.env.DB_SCHEMA +
+        `."TRANSACTION" A 
         GROUP BY STATUS`,
         function (err, data) {
           if (err) {
@@ -705,11 +705,11 @@ app.get("/getRequestStatusCountForGovernment", function (request, response) {//d
       );
     }
   });
-  
-  
+
+
 });
 
-app.get("/getRequestDateChartForGovernment",function(request,response){
+app.get("/getRequestDateChartForGovernment", function (request, response) {
   var mergeQuery = []
   ibmdb.open(connStr, function (err, conn) {
     if (err) {
@@ -718,8 +718,8 @@ app.get("/getRequestDateChartForGovernment",function(request,response){
       conn.query(
         `SELECT COUNT(*) AS completedBags, DATE
         FROM ` +
-          process.env.DB_SCHEMA +
-          `."TRANSACTION" GROUP BY STATUS, DATE
+        process.env.DB_SCHEMA +
+        `."TRANSACTION" GROUP BY STATUS, DATE
           HAVING  STATUS ='Completed'
           ORDER BY DATE;`,
         function (err, data) {
@@ -730,8 +730,8 @@ app.get("/getRequestDateChartForGovernment",function(request,response){
             conn.query(
               `  SELECT Count(*) as requestedBags,date
             FROM ` +
-                process.env.DB_SCHEMA +
-                `."TRANSACTION"
+              process.env.DB_SCHEMA +
+              `."TRANSACTION"
             GROUP BY status,date
             having  STATUS ='Requested'
             ORDER BY DATE;`,
@@ -747,17 +747,17 @@ app.get("/getRequestDateChartForGovernment",function(request,response){
                       data: mergeQuery,
                     });
                   })
-                 
+
                 }
               }
             );
-            
+
           }
         }
       );
     }
   });
-  
+
 })
 
 app.get("/getTransactionsForGovernment", function (request, response) {
@@ -794,7 +794,7 @@ app.get("/getTransactionsForGovernment", function (request, response) {
 
 });
 
-app.get("/getProvinceDataForGovernment",function (request,response){
+app.get("/getProvinceDataForGovernment", function (request, response) {
   ibmdb.open(connStr, function (err, conn) {
     if (err) {
       console.log(err);
@@ -822,7 +822,7 @@ app.get("/getProvinceDataForGovernment",function (request,response){
 
 })
 
-app.get("/getMonthlyRequestForGovernment",function(request,response){
+app.get("/getMonthlyRequestForGovernment", function (request, response) {
   ibmdb.open(connStr, function (err, conn) {
     if (err) {
       console.log(err);
@@ -830,23 +830,92 @@ app.get("/getMonthlyRequestForGovernment",function(request,response){
       conn.query(`  SELECT MONTH("DATE")||'-'||YEAR("DATE") as date, COUNT(*) as total, STATUS
     FROM TRANSACTION
     GROUP BY MONTH("DATE")||'-'|| YEAR("DATE"),STATUS;`, function (err, data) {
-      if (err){
-        return response.json({success:-2, message:err});
-      }
-      else{
-        conn.close(function () {
-          return response.json({
-            success: 1,
-            message: "Data Received!",
-            data: data,
+        if (err) {
+          return response.json({ success: -2, message: err });
+        }
+        else {
+          conn.close(function () {
+            return response.json({
+              success: 1,
+              message: "Data Received!",
+              data: data,
+            });
           });
-        });
-      }
-  });
+        }
+      });
     }
   });
-    
+
 });
+
+// Retrieves the inventory items for a particular NGO
+// getInventoryItemsForNGO(ngoId)
+app.get('/getInventoryItemsForNGO', function (request, response) {
+  let ngoId = request.body.ngoId;
+  ibmdb.open(connStr, function (err, conn) {
+    if (err) {
+      console.log(err);
+    } else {
+      conn.query(` SELECT ITEM, CATEGORY, QUANTITY, UNIT, LAT, LON
+      FROM INVENTORY_DETAILS WHERE NGO_ID = ` + Number(ngoId), function (err, data) {
+        if (err) {
+          return response.json({
+            success: -2,
+            message: err
+          });
+        } else {
+          return response.json({
+            success: 1,
+            message: "data received",
+            data: data
+          });
+        }
+
+      });
+    }
+  })
+
+
+});
+
+// Send an aid request
+// createAidRequest(aidRequest)
+
+// Retrieve the list of requests that best match an NGO's current inventory
+// getMatchingRequests(ngoId)
+
+// Retrieve the list of NGOs that best match a given request by item and qty
+app.get('/getNGOsForRequest', function (request, response) {
+  let item = request.body.item;
+  let qty = request.body.qty;
+
+  ibmdb.open(connStr, function (err, conn) {
+    if (err) {
+      console.log("Error: " + err);
+    } else {
+      conn.query(`SELECT n."Name", n.NGO_ID from NGO n 
+      INNER JOIN INVENTORY_DETAILS id ON n.NGO_ID = id.NGO_ID
+      WHERE id.ITEM = '` + item + `' AND id.QUANTITY >= ` + qty, function (err, data) {
+        if (err) {
+          return response.json({
+            success: -2,
+            message: err
+          });
+        } else {
+          return response.json({
+            success: 1,
+            data: data
+          });
+        }
+      });
+    }
+  });
+});
+
+
+
+
+
 //  let NGOId = request.body.NGOId;
 //     conn.query("SELECT * FROM "+process.env.DB_SCHEMA+".TRANSACTION where ID ="+NGOId+";", function (err, data) {
 //       if (err){
@@ -865,7 +934,7 @@ app.get("/getMonthlyRequestForGovernment",function(request,response){
 //   // openConnection();
 // });
 
- function openConnection() {
+function openConnection() {
   ibmdb.open(connStr, function (err, conn) {
     if (err) {
       console.log(err);
