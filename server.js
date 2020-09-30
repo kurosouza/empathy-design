@@ -5,6 +5,7 @@ var app = express();
 var path = require("path");
 var bodyParser = require("body-parser");
 const ibmdb = require("ibm_db");
+const { response } = require("express");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(function (req, res, next) {
@@ -881,8 +882,60 @@ app.get('/getInventoryItemsForNGO', function (request, response) {
 // Send an aid request
 // createAidRequest(aidRequest)
 
+// GetAllRequests
+app.get('/getRequests', function(request, response){
+  ibmdb.open(connStr, function(err, conn){
+    if(err) {
+      console.log("Error: " + err);
+    } else {
+      conn.query(`SELECT FIRST_NAME, LAST_NAME, SSN, ITEM, QTY, LAT, LON, TIMESTAMP FROM REQUEST`, function(err, data){
+        if(err) {
+          return response.json({
+            success: -2,
+            message: err
+          })
+        } else {
+          return response.json({
+            success:1,
+            message: "retrieved",
+            data: data
+          });
+        }
+      });
+    }
+  });
+});
+
 // Retrieve the list of requests that best match an NGO's current inventory
 // getMatchingRequests(ngoId)
+app.get('/getMatchingRequests', function (request, response) {
+  let ngoId = request.body.ngoId;
+  let qty = request.body.qty;
+
+  ibmdb.open(connStr, function (err, conn) {
+    if (err) {
+      console.log("Error: " + err);
+    } else {
+      conn.query(`SELECT r."FIRST_NAME", r.LAST_NAME from REQUEST r INNER JOIN NGO n ON r.NGO_ID
+      INNER JOIN INVENTORY_DETAILS id ON n.NGO_ID = id.NGO_ID
+      WHERE id.ITEM = '` + item + `' AND id.QUANTITY >= ` + qty, function (err, data) {
+        if (err) {
+          return response.json({
+            success: -2,
+            message: err
+          });
+        } else {
+          return response.json({
+            success: 1,
+            data: data
+          });
+        }
+      });
+    }
+  });
+});
+
+
 
 // Retrieve the list of NGOs that best match a given request by item and qty
 app.get('/getNGOsForRequest', function (request, response) {
