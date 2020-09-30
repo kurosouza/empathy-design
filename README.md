@@ -6,6 +6,10 @@ Call4Code Team: Empathy Team
 # Empathy
 A Donor-to-Request mapping solution for the Call-For-Code Beirut Challenge
 
+[Video link](https://www.youtube.com/watch?v=VGHMiMYIYtA)
+
+
+
 ## Introduction
 
 On 4 August 2020, tragedy struck the capital of Lebanon, Beirut. A large amount of ammonium nitrate stored at the port of the city of Beirut, the capital of Lebanon, exploded, causing at least 200 deaths, three reported missing, 6,500 injuries, US$10–15 billion in property damage, and leaving an estimated 300,000 people homeless. 
@@ -57,6 +61,39 @@ Our team is currently working on:
 
 We will be updating the source code repository accordingly.
 
+### Update 
+
+We have updated the Al-Wasl-Connect application with a working inventory module loaded with data to allow us build the recommendation engine based on Aid requests.
+
+![inventory_dashboard_module](./images/inventory_dashboard.png)
+
+We have also added some useful endpoints to the API backend to allow applications query for what aid items are available from an NGO. The following API endpoints have been added:
+
+1. **/getInventoryItemsForNGO** : This endpoint allows a user or module to find what items a specific NGO has in their inventory
+2. **/getRequests** : This endpoint allows a module to view all Aid requests that have been received by Al-Wasl-Connect
+3. **/getNGOsForRequest**: This endpoint takes a request as a parameter and returns all NGOs that have the request items available in their inventory.  
+4. **/getMatchingRequests**: This endpoint takes an NGO ID as a parameter and returns all requests that the NGO can fulfill based on their available inventory (IN PROGRESS)
+
+We have also loaded some sample data into our IBM DB2 database instance to test out our application:
+
+1. Inventory data
+
+![inventory_sample_data](./images/inventory_sample_data.png)
+
+2. Aid Request data
+
+   ![](./images/request_sample_data.png)
+
+
+
+### Project link
+
+[https://cwi-awc-frontend.mybluemix.net/](https://cwi-awc-frontend.mybluemix.net/)
+
+### Github
+
+[https://github.com/kurosouza/empathy-design](https://github.com/kurosouza/empathy-design)
+
 
 
 ### Our Team
@@ -65,5 +102,5 @@ We will be updating the source code repository accordingly.
 2. Grace James
 3. Kuro Souza
 4. Ehinmowo Blessing
-5. Ire
-6. Samuel
+5. Bamidele Isaac Iredapo
+6. Samuel Adesola
