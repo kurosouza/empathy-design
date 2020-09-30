@@ -17,6 +17,7 @@ import { ToastrService } from "ngx-toastr";
 import "chartjs-plugin-labels";
 import * as _ from "lodash";
 import * as moment from "moment";
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 declare var $: any;
 
 export type SortDirection = "asc" | "desc" | "";
@@ -83,6 +84,8 @@ export class DashboardComponent implements OnInit {
   page = 1;
   pageSize = 10;
   transactionData = [];
+  aidRequests = [];
+  inventory = [];
   userData = [];
   requestStatus = [];
   requestDateData = [];
@@ -132,6 +135,8 @@ export class DashboardComponent implements OnInit {
 
     this.getNGOStats();
     this.getTransactionsFromDB();
+    // this.getInventoryFromDB();
+    // this.getRequestsFromDB();
     this.utilFunction();
     // this.getNGOStats();
     // this.getTransactionsFromDB();
@@ -148,6 +153,26 @@ export class DashboardComponent implements OnInit {
         this.tableloaded = true;
       }
     });
+  }
+
+  getInventoryFromDB() {
+    this._httpService.getInventory(this.NGOId).subscribe((data) => {
+      if(data["success"] != 1) {
+        console.log("Error retrieving inventory: " +data["message"]);
+      } else {
+        this.inventory = data["data"];
+      }
+    });
+  }
+
+  getRequestsFromDB() {
+    this._httpService.getRequests().subscribe((data) => {
+      if(data["success"] != 1) {
+        console.log("Error retrieving requests: " + data["message"]);
+      } else {
+        this.aidRequests = data["data"];
+      }
+    })
   }
 
   getNGOStats() {
@@ -184,7 +209,21 @@ export class DashboardComponent implements OnInit {
                           } else {
                             this.requestDateMontlyData = data["data"];
                             this.chartRendering();
-                            
+                            this._httpService.getRequests().subscribe((data) => {
+                              if(data["success"] != 1) {
+                                console.log("Load requests failed: ", data["message"]);
+                              } else {
+                                this.aidRequests = data["data"];
+
+                                this._httpService.getInventory(this.NGOId).subscribe((data) => {
+                                  if(data["success"] != 1) {
+                                    console.log("Load inventory failed: ", data["message"]);
+                                  } else {
+                                    this.inventory = data["data"];
+                                  }
+                                });
+                              }
+                            })
                             
                           }
                         });

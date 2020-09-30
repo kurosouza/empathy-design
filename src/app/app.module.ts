@@ -23,6 +23,7 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { DonorComponent } from './pages/donor/donor.component';
 import { WelcomeComponent } from './welcome/welcome.component';
+import { InventoryComponent } from './inventory/inventory.component';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import { WelcomeComponent } from './welcome/welcome.component';
     LoginComponent,
     RegisterComponent,
     DonorComponent,
-    WelcomeComponent
+    WelcomeComponent,
+    InventoryComponent
   ],
   imports: [
     BrowserAnimationsModule,

@@ -5,6 +5,6 @@
 
 export const environment = {
   production: false,
-  NODE_HOST: 'https://awchost.mybluemix.net'
+  NODE_HOST: 'http://localhost:8888'
 };
 

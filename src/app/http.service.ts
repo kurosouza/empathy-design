@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { environment } from '../environments/environment';
 
 @Injectable({
@@ -22,6 +22,16 @@ export class HttpService {
   };
 
   //Donor Apis
+
+  getInventory(ngoId) {
+    const payload = ngoId;
+
+    return this.http.get(environment.NODE_HOST + '/getInventoryItemsForNGO', { ...this.httpOptions, params: { ngoId: payload} });
+  }
+
+  getRequests() {
+    return this.http.get(environment.NODE_HOST + '/getRequests', this.httpOptions);
+  }
 
   getUsers(){
     return this.http.get(environment.NODE_HOST + '/getUsers', this.httpOptions);

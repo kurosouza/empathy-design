@@ -192,6 +192,67 @@
  </div> -->
 
 </div>
+
+<!-- Inventory -->
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="card ">
+      <div class="card-header ">
+          <h5 class="card-title">Inventory Details</h5>
+        <!-- <p class="card-category">Sorted by Days</p> -->
+      </div>
+      <div class="card-body table-responsive pt-0">
+        <button type="button" class="btn add-new pull-right border rounded"><i class="fa fa-search"></i> Search Inventory</button>
+        <ngx-loading [show]="loading" [config]="{backdropBackgroundColour:'rgba(0, 0, 0, 0.05)',animationType: ngxLoadingAnimationTypes.rectangleBounce, primaryColour: '#E3E3E3', backdropBorderRadius: '3px'}"></ngx-loading>
+       <table *ngIf= "tableloaded" class="table table-hover table-sm">
+           <thead class="thead-dark">
+          <tr>
+            <th scope="col" sortable="ITEM" (sort)="onSort($event)">ITEM</th>
+            <th scope="col" sortable="CATEGORY" (sort)="onSort($event)">CATEGORY</th>
+            <th scope="col" sortable="QTY" (sort)="onSort($event)">QTY</th>
+            <th scope="col" sortable="UNIT" (sort)="onSort($event)">UNIT</th> 
+            
+            <th scope="col">Actions</th>
+          </tr>
+          </thead>
+          <tbody> 
+         
+
+          <tr *ngFor="let item of inventory | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
+            
+            <td >{{ item.ITEM }}</td>
+            <td>
+             {{ item.CATEGORY }}
+            </td>
+            <td>{{ item.QUANTITY }}</td>
+            <td>{{ item.UNIT }}</td>
+            
+            
+            <td>
+              <a class="edit cursor" (click)="editRequest(user.ID)" title="Edit"><i class="fa fa-pencil" style="color:#18A2B8"></i></a>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+        <div class="d-flex justify-content-between p-2">
+          <ngb-pagination [collectionSize]="userData.length" [(page)]="page" [maxSize]="10" [rotate]="true" [ellipses]="true" [boundaryLinks]="true"></ngb-pagination>
+        </div>
+        <!-- <canvas id=chartHours width="400" height="100"></canvas> -->
+      </div>
+      <!-- <div class="card-footer ">
+        <hr>
+        <div class="stats">
+          <i class="fa fa-history"></i> Updated 3 minutes ago
+        </div>
+      </div> -->
+    </div>
+  </div>
+</div>
+
+<!-- /Inventory-->
+
+
 <div class="row">
   <div class="col-md-12">
     <div class="card ">

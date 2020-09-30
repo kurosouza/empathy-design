@@ -57,7 +57,7 @@ app.post("/getFamilyLatLng", function (request, response) {
         process.env.DB_SCHEMA +
         `.TRANSACTION A INNER JOIN ` +
         process.env.DB_SCHEMA +
-        `.USERS C ON C.ID = A.USER_ID 
+        `.UUSERS C ON C.ID = A.USER_ID 
       INNER JOIN `+
         process.env.DB_SCHEMA +
         `.FAMILY B ON B."Family_id"= C."Family_id"
@@ -121,7 +121,7 @@ app.get('/getFamilyLatLngForGovernment', function (request, response) {
         process.env.DB_SCHEMA +
         `.TRANSACTION A INNER JOIN ` +
         process.env.DB_SCHEMA +
-        `.USERS C ON C.ID = A.USER_ID 
+        `.UUSERS C ON C.ID = A.USER_ID 
       INNER JOIN `+
         process.env.DB_SCHEMA +
         `.FAMILY B ON B."Family_id"= C."Family_id"
@@ -154,7 +154,7 @@ app.get("/getUsers", function (request, response) {
     if (err) {
       console.log(err);
     } else {
-      conn.query("SELECT * FROM " + process.env.DB_SCHEMA + ".USERS;", function (
+      conn.query("SELECT * FROM " + process.env.DB_SCHEMA + ".UUSERS;", function (
         err,
         data
       ) {
@@ -428,7 +428,7 @@ app.post("/getTransactions", function (request, response) {
     } else {
       conn.query(
         ` SELECT  B.ID ,B.DATE, A."First_Name", A."Last_Name",A."ID_cnic", A."Family_id", B.NO_OF_PACKAGES, B.STATUS
-      FROM USERS A 
+      FROM UUSERS A 
       INNER JOIN TRANSACTION B ON A.ID = B.USER_ID INNER JOIN NGO C ON B.NGO_ID = C.ID
       WHERE C.NGO_ID=` +
         NGOId +
@@ -436,7 +436,7 @@ app.post("/getTransactions", function (request, response) {
       UNION
     ( 
       SELECT B.ID,B.DATE, A."First_Name", A."Last_Name",A."ID_cnic", A."Family_id", B.NO_OF_PACKAGES, B.STATUS
-      FROM USERS A INNER JOIN TRANSACTION B ON A.ID = B.USER_ID
+      FROM UUSERS A INNER JOIN TRANSACTION B ON A.ID = B.USER_ID
       WHERE STATUS='Requested')
       ORDER BY ID,DATE;`,
         function (err, data) {
@@ -768,12 +768,12 @@ app.get("/getTransactionsForGovernment", function (request, response) {
     } else {
       conn.query(
         `  SELECT B.ID, B.DATE, A."First_Name", A."Last_Name", A."ID_cnic", A."Family_id", B.NO_OF_PACKAGES,C."Name", B.STATUS
-        FROM USERS A 
+        FROM UUSERS A 
         INNER JOIN TRANSACTION B ON A.ID = B.USER_ID INNER JOIN NGO C ON B.NGO_ID = C.ID
       UNION
       (
         SELECT B.ID, B.DATE, A."First_Name", A."Last_Name", A."ID_cnic", A."Family_id", B.NO_OF_PACKAGES,Null as NGOName, B.STATUS
-        FROM USERS A INNER JOIN TRANSACTION B ON A.ID = B.USER_ID
+        FROM UUSERS A INNER JOIN TRANSACTION B ON A.ID = B.USER_ID
         WHERE STATUS='Requested')
         ORDER BY ID,DATE ASC;`,
         function (err, data) {
@@ -852,7 +852,7 @@ app.get("/getMonthlyRequestForGovernment", function (request, response) {
 // Retrieves the inventory items for a particular NGO
 // getInventoryItemsForNGO(ngoId)
 app.get('/getInventoryItemsForNGO', function (request, response) {
-  let ngoId = request.body.ngoId;
+  let ngoId = request.query.ngoId;
   ibmdb.open(connStr, function (err, conn) {
     if (err) {
       console.log(err);
